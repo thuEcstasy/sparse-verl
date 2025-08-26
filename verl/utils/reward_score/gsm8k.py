@@ -28,7 +28,10 @@ def extract_solution(solution_str, method="strict"):
 
     if method == "strict":
         # this also tests the formatting of the model
-        solutions = re.findall("#### (\\-?[0-9\\.\\,]+)", solution_str)
+        # change this parser to fit qwen2.5/qwen3 reasoning format
+        # solutions = re.findall("#### (\\-?[0-9\\.\\,]+)", solution_str)
+        solutions = re.findall(r"\\boxed\{([^}]+)\}", solution_str)
+
         if len(solutions) == 0:
             final_answer = None
         else:

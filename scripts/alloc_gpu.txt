@@ -1,0 +1,7 @@
+srun --partition=HGPU --gres=gpu:1 --time=48:00:00 --pty bash
+srun --partition=defq --gres=gpu:1 --nodelist=node-gpu02 --time=70:00:00 --pty bash
+
+python3 -m verl.model_merger merge \
+    --backend fsdp \
+    --local_dir /home/haizhonz/Zhaofeng/verl/scripts/checkpoints/sparse-verl/Deepseek_r1_distill_1.5B-dense_rollout/global_step_120/actor \
+    --target_dir /home/haizhonz/Zhaofeng/verl/scripts/checkpoints/sparse-verl/Deepseek_r1_distill_1.5B-dense_rollout/global_step_120/actor/huggingface

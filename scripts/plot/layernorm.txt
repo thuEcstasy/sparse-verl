@@ -1,0 +1,280 @@
+Layer model.layers.0.input_layernorm.weight:
+  L2 norm sparse diff: 0.000000
+  L2 norm dense diff:  0.000000
+  Max abs sparse diff: 0.000000
+  Max abs dense diff:  0.000000
+Layer model.layers.1.input_layernorm.weight:
+  L2 norm sparse diff: 0.000250
+  L2 norm dense diff:  0.000303
+  Max abs sparse diff: 0.000123
+  Max abs dense diff:  0.000122
+Layer model.layers.10.input_layernorm.weight:
+  L2 norm sparse diff: 0.000114
+  L2 norm dense diff:  0.000084
+  Max abs sparse diff: 0.000082
+  Max abs dense diff:  0.000072
+Layer model.layers.11.input_layernorm.weight:
+  L2 norm sparse diff: 0.000117
+  L2 norm dense diff:  0.000124
+  Max abs sparse diff: 0.000092
+  Max abs dense diff:  0.000087
+Layer model.layers.12.input_layernorm.weight:
+  L2 norm sparse diff: 0.000082
+  L2 norm dense diff:  0.000063
+  Max abs sparse diff: 0.000058
+  Max abs dense diff:  0.000048
+Layer model.layers.13.input_layernorm.weight:
+  L2 norm sparse diff: 0.000103
+  L2 norm dense diff:  0.000089
+  Max abs sparse diff: 0.000099
+  Max abs dense diff:  0.000085
+Layer model.layers.14.input_layernorm.weight:
+  L2 norm sparse diff: 0.000153
+  L2 norm dense diff:  0.000075
+  Max abs sparse diff: 0.000093
+  Max abs dense diff:  0.000054
+Layer model.layers.15.input_layernorm.weight:
+  L2 norm sparse diff: 0.000258
+  L2 norm dense diff:  0.000261
+  Max abs sparse diff: 0.000244
+  Max abs dense diff:  0.000244
+Layer model.layers.16.input_layernorm.weight:
+  L2 norm sparse diff: 0.000139
+  L2 norm dense diff:  0.000087
+  Max abs sparse diff: 0.000129
+  Max abs dense diff:  0.000058
+Layer model.layers.17.input_layernorm.weight:
+  L2 norm sparse diff: 0.000136
+  L2 norm dense diff:  0.000093
+  Max abs sparse diff: 0.000102
+  Max abs dense diff:  0.000083
+Layer model.layers.18.input_layernorm.weight:
+  L2 norm sparse diff: 0.000064
+  L2 norm dense diff:  0.000068
+  Max abs sparse diff: 0.000057
+  Max abs dense diff:  0.000067
+Layer model.layers.19.input_layernorm.weight:
+  L2 norm sparse diff: 0.000069
+  L2 norm dense diff:  0.000134
+  Max abs sparse diff: 0.000046
+  Max abs dense diff:  0.000126
+Layer model.layers.2.input_layernorm.weight:
+  L2 norm sparse diff: 0.000129
+  L2 norm dense diff:  0.000166
+  Max abs sparse diff: 0.000067
+  Max abs dense diff:  0.000098
+Layer model.layers.20.input_layernorm.weight:
+  L2 norm sparse diff: 0.000061
+  L2 norm dense diff:  0.000148
+  Max abs sparse diff: 0.000057
+  Max abs dense diff:  0.000122
+Layer model.layers.21.input_layernorm.weight:
+  L2 norm sparse diff: 0.000010
+  L2 norm dense diff:  0.000138
+  Max abs sparse diff: 0.000009
+  Max abs dense diff:  0.000119
+Layer model.layers.22.input_layernorm.weight:
+  L2 norm sparse diff: 0.000054
+  L2 norm dense diff:  0.000108
+  Max abs sparse diff: 0.000036
+  Max abs dense diff:  0.000074
+Layer model.layers.23.input_layernorm.weight:
+  L2 norm sparse diff: 0.000080
+  L2 norm dense diff:  0.000089
+  Max abs sparse diff: 0.000058
+  Max abs dense diff:  0.000061
+Layer model.layers.24.input_layernorm.weight:
+  L2 norm sparse diff: 0.000025
+  L2 norm dense diff:  0.000082
+  Max abs sparse diff: 0.000025
+  Max abs dense diff:  0.000061
+Layer model.layers.25.input_layernorm.weight:
+  L2 norm sparse diff: 0.000067
+  L2 norm dense diff:  0.000029
+  Max abs sparse diff: 0.000059
+  Max abs dense diff:  0.000026
+Layer model.layers.26.input_layernorm.weight:
+  L2 norm sparse diff: 0.000071
+  L2 norm dense diff:  0.000105
+  Max abs sparse diff: 0.000057
+  Max abs dense diff:  0.000087
+Layer model.layers.27.input_layernorm.weight:
+  L2 norm sparse diff: 0.000122
+  L2 norm dense diff:  0.000273
+  Max abs sparse diff: 0.000122
+  Max abs dense diff:  0.000244
+Layer model.layers.3.input_layernorm.weight:
+  L2 norm sparse diff: 0.000084
+  L2 norm dense diff:  0.000108
+  Max abs sparse diff: 0.000053
+  Max abs dense diff:  0.000078
+Layer model.layers.4.input_layernorm.weight:
+  L2 norm sparse diff: 0.000102
+  L2 norm dense diff:  0.000169
+  Max abs sparse diff: 0.000073
+  Max abs dense diff:  0.000111
+Layer model.layers.5.input_layernorm.weight:
+  L2 norm sparse diff: 0.000132
+  L2 norm dense diff:  0.000066
+  Max abs sparse diff: 0.000089
+  Max abs dense diff:  0.000051
+Layer model.layers.6.input_layernorm.weight:
+  L2 norm sparse diff: 0.000135
+  L2 norm dense diff:  0.000088
+  Max abs sparse diff: 0.000101
+  Max abs dense diff:  0.000059
+Layer model.layers.7.input_layernorm.weight:
+  L2 norm sparse diff: 0.000087
+  L2 norm dense diff:  0.000086
+  Max abs sparse diff: 0.000077
+  Max abs dense diff:  0.000055
+Layer model.layers.8.input_layernorm.weight:
+  L2 norm sparse diff: 0.000134
+  L2 norm dense diff:  0.000161
+  Max abs sparse diff: 0.000124
+  Max abs dense diff:  0.000124
+Layer model.layers.9.input_layernorm.weight:
+  L2 norm sparse diff: 0.000112
+  L2 norm dense diff:  0.000160
+  Max abs sparse diff: 0.000079
+  Max abs dense diff:  0.000094
+Layer model.layers.0.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000188
+  L2 norm dense diff:  0.000222
+  Max abs sparse diff: 0.000086
+  Max abs dense diff:  0.000111
+Layer model.layers.1.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000004
+  L2 norm dense diff:  0.000076
+  Max abs sparse diff: 0.000004
+  Max abs dense diff:  0.000076
+Layer model.layers.10.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000062
+  L2 norm dense diff:  0.000034
+  Max abs sparse diff: 0.000062
+  Max abs dense diff:  0.000034
+Layer model.layers.11.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000005
+  L2 norm dense diff:  0.000018
+  Max abs sparse diff: 0.000005
+  Max abs dense diff:  0.000018
+Layer model.layers.12.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000020
+  L2 norm dense diff:  0.000020
+  Max abs sparse diff: 0.000020
+  Max abs dense diff:  0.000020
+Layer model.layers.13.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000066
+  L2 norm dense diff:  0.000041
+  Max abs sparse diff: 0.000066
+  Max abs dense diff:  0.000041
+Layer model.layers.14.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000025
+  L2 norm dense diff:  0.000053
+  Max abs sparse diff: 0.000025
+  Max abs dense diff:  0.000053
+Layer model.layers.15.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000147
+  L2 norm dense diff:  0.000130
+  Max abs sparse diff: 0.000147
+  Max abs dense diff:  0.000130
+Layer model.layers.16.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000037
+  L2 norm dense diff:  0.000063
+  Max abs sparse diff: 0.000037
+  Max abs dense diff:  0.000063
+Layer model.layers.17.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000037
+  L2 norm dense diff:  0.000025
+  Max abs sparse diff: 0.000037
+  Max abs dense diff:  0.000025
+Layer model.layers.18.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000014
+  L2 norm dense diff:  0.000031
+  Max abs sparse diff: 0.000014
+  Max abs dense diff:  0.000031
+Layer model.layers.19.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000060
+  L2 norm dense diff:  0.000076
+  Max abs sparse diff: 0.000060
+  Max abs dense diff:  0.000076
+Layer model.layers.2.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000027
+  L2 norm dense diff:  0.000038
+  Max abs sparse diff: 0.000021
+  Max abs dense diff:  0.000027
+Layer model.layers.20.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000079
+  L2 norm dense diff:  0.000018
+  Max abs sparse diff: 0.000079
+  Max abs dense diff:  0.000018
+Layer model.layers.21.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000066
+  L2 norm dense diff:  0.000034
+  Max abs sparse diff: 0.000066
+  Max abs dense diff:  0.000034
+Layer model.layers.22.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000095
+  L2 norm dense diff:  0.000067
+  Max abs sparse diff: 0.000095
+  Max abs dense diff:  0.000067
+Layer model.layers.23.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000024
+  L2 norm dense diff:  0.000071
+  Max abs sparse diff: 0.000024
+  Max abs dense diff:  0.000071
+Layer model.layers.24.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000040
+  L2 norm dense diff:  0.000084
+  Max abs sparse diff: 0.000039
+  Max abs dense diff:  0.000072
+Layer model.layers.25.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000041
+  L2 norm dense diff:  0.000014
+  Max abs sparse diff: 0.000035
+  Max abs dense diff:  0.000011
+Layer model.layers.26.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000136
+  L2 norm dense diff:  0.000086
+  Max abs sparse diff: 0.000122
+  Max abs dense diff:  0.000061
+Layer model.layers.27.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000047
+  L2 norm dense diff:  0.000119
+  Max abs sparse diff: 0.000046
+  Max abs dense diff:  0.000104
+Layer model.layers.3.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000126
+  L2 norm dense diff:  0.000089
+  Max abs sparse diff: 0.000122
+  Max abs dense diff:  0.000067
+Layer model.layers.4.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000142
+  L2 norm dense diff:  0.000055
+  Max abs sparse diff: 0.000141
+  Max abs dense diff:  0.000050
+Layer model.layers.5.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000049
+  L2 norm dense diff:  0.000004
+  Max abs sparse diff: 0.000049
+  Max abs dense diff:  0.000004
+Layer model.layers.6.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000001
+  L2 norm dense diff:  0.000032
+  Max abs sparse diff: 0.000001
+  Max abs dense diff:  0.000031
+Layer model.layers.7.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000137
+  L2 norm dense diff:  0.000116
+  Max abs sparse diff: 0.000136
+  Max abs dense diff:  0.000114
+Layer model.layers.8.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000054
+  L2 norm dense diff:  0.000118
+  Max abs sparse diff: 0.000052
+  Max abs dense diff:  0.000092
+Layer model.layers.9.post_attention_layernorm.weight:
+  L2 norm sparse diff: 0.000078
+  L2 norm dense diff:  0.000153
+  Max abs sparse diff: 0.000057
+  Max abs dense diff:  0.000139

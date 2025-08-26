@@ -1,6 +1,7 @@
 export SGL_DISABLE_TP_MEMORY_INBALANCE_CHECK=True
 export PYTHONPATH=/home/haizhonz/Zhaofeng/sglang/python:$PYTHONPATH
-
+# export CUDA_LAUNCH_BLOCKING=1
+conda activate verl-sparse
 module load cuda12.4/toolkit/12.4.1
 nvcc -V
 
@@ -9,15 +10,16 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     data.train_files=$HOME/data/gsm8k/train.parquet \
     data.val_files=$HOME/data/gsm8k/test.parquet \
     data.train_batch_size=16 \
+    data.val_batch_size=1 \
     data.max_prompt_length=512 \
-    data.max_response_length=4096 \
+    data.max_response_length=3072 \
     data.filter_overlong_prompts=True \
     data.truncation='error' \
-    actor_rollout_ref.model.path=Qwen/Qwen3-0.6B \
+    actor_rollout_ref.model.path=Qwen/Qwen2.5-Math-1.5B \
     actor_rollout_ref.actor.optim.lr=1e-6 \
     actor_rollout_ref.model.use_remove_padding=True \
-    actor_rollout_ref.actor.ppo_mini_batch_size=8 \
-    actor_rollout_ref.actor.ppo_micro_batch_size_per_gpu=4 \
+    actor_rollout_ref.actor.ppo_mini_batch_size=1 \
+    actor_rollout_ref.actor.ppo_micro_batch_size_per_gpu=1 \
     actor_rollout_ref.actor.use_kl_loss=True \
     actor_rollout_ref.actor.kl_loss_coef=0.001 \
     actor_rollout_ref.actor.kl_loss_type=low_var_kl \
@@ -26,17 +28,17 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     actor_rollout_ref.model.enable_gradient_checkpointing=False \
     actor_rollout_ref.actor.fsdp_config.param_offload=True \
     actor_rollout_ref.actor.fsdp_config.optimizer_offload=True \
-    actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=16 \
+    actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=1 \
     actor_rollout_ref.rollout.tensor_model_parallel_size=1 \
     actor_rollout_ref.rollout.name=sglang \
     actor_rollout_ref.rollout.gpu_memory_utilization=0.85 \
-    actor_rollout_ref.rollout.n=3 \
+    actor_rollout_ref.rollout.n=2 \
     actor_rollout_ref.ref.log_prob_micro_batch_size_per_gpu=16 \
     actor_rollout_ref.ref.fsdp_config.param_offload=True \
     actor_rollout_ref.ref.strategy=fsdp2 \
     actor_rollout_ref.rollout.engine_kwargs.sglang.attention_backend='flashinfer' \
     +actor_rollout_ref.rollout.engine_kwargs.sglang.disable_cuda_graph=True \
-    +actor_rollout_ref.rollout.engine_kwargs.sglang.vortex_num_selected_pages=16 \
+    +actor_rollout_ref.rollout.engine_kwargs.sglang.vortex_num_selected_pages=8 \
     +actor_rollout_ref.rollout.engine_kwargs.sglang.page_size=16 \
     +actor_rollout_ref.rollout.engine_kwargs.sglang.vortex_sparse_attention_algorithm='BLOCK_TOPK' \
     +actor_rollout_ref.rollout.engine_kwargs.sglang.disable_overlap_schedule=True \
@@ -48,10 +50,10 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     trainer.critic_warmup=0 \
     trainer.logger=['console, wandb'] \
     trainer.project_name='sparse-verl' \
-    trainer.experiment_name='sparse-verl' \
+    trainer.experiment_name='Qwen2-1.5B-block-topk-sparse_rollout' \
     trainer.n_gpus_per_node=1 \
     trainer.nnodes=1 \
     trainer.save_freq=20 \
-    trainer.test_freq=5 \
+    trainer.test_freq=20 \
     trainer.total_epochs=15 \
     trainer.resume_mode=disable
