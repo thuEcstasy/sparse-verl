@@ -53,7 +53,6 @@ if __name__ == '__main__':
 
         def process_fn(example, idx):
             random_int = np.random.randint(0, 1000)
-
             question = example.pop('problem')
             solution = example.pop('answer')
             if random_int == 0:
@@ -62,10 +61,7 @@ if __name__ == '__main__':
 
             data = {
                 "data_source": data_source,
-                "prompt": [{
-                    "role": "user",
-                    "content": question
-                }],
+                "prompt": f"Please reason step by step, and put your final answer within \\boxed{{}}. {question}",
                 "ability": "math",
                 "reward_model": {
                     "style": "rule",
@@ -85,7 +81,7 @@ if __name__ == '__main__':
     local_dir = args.local_dir
     hdfs_dir = args.hdfs_dir
 
-    test_dataset.to_parquet(os.path.join(local_dir, 'test_128.parquet'))
+    test_dataset.to_parquet(os.path.join(local_dir, 'test.parquet'))
     # print length of processed data
     print(f"Length of processed data: {len(test_dataset)}")
 

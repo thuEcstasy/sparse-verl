@@ -1,5 +1,5 @@
 srun --partition=HGPU --gres=gpu:1 --time=48:00:00 --pty bash
-srun --partition=defq --gres=gpu:1 --nodelist=node-gpu02 --time=70:00:00 --pty bash
+srun --partition=defq --gres=gpu:2 --nodelist=node-gpu02 --time=70:00:00 --pty bash
 
 python3 -m verl.model_merger merge \
     --backend fsdp \

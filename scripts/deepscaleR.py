@@ -263,8 +263,7 @@ def make_prefix(dp, template_type):
     elif template_type == 'qwen-instruct':
         """This works for Qwen Instruct Models"""
         prefix = f"""<|im_start|>system\nYou are a helpful assistant. You first thinks about the reasoning process in the mind and then provides the user with the answer.<|im_end|>\n<|im_start|>user\n Please solve the following math problem: {problem}. Show your steps in <think> </think> tags. And return the final answer in \\boxed{{}} tags, for example \\boxed{{1}}.<|im_end|>\n<|im_start|>assistant\nLet me solve this step by step.\n<think>"""
-    else:
-        prefix = f"""Please solve the following math problem: {problem}. The assistant first thinks about the reasoning process step by step and then provides the user with the answer. Return the final answer in \\boxed{{}} tags, for example \\boxed{{1}}. Let's solve this step by step. """
+        # prefix = f"""Please solve the following math problem: {problem}. The assistant first thinks about the reasoning process step by step and then provides the user with the answer. Return the final answer in \\boxed{{}} tags, for example \\boxed{{1}}. Let's solve this step by step."""
     return prefix
 
 if __name__ == '__main__':
@@ -293,20 +292,14 @@ if __name__ == '__main__':
         def process_fn(example, idx):
             # question = example.pop('problem')
 
-            question = make_prefix(example, args.template_type)
-            if idx < 5:
-                print(question)
             question = example.pop('problem')
-
             solution = example.pop('answer')
             if solution is None:
                 raise ValueError("Solution is None")
             data = {
                 "data_source": data_source,
-                "prompt": [{
-                    "role": "user",
-                    "content": question
-                }],
+                "prompt": [
+                    {"role": "user", "content":  f"Please reason step by step, and put your final answer within \\boxed{{}}. {question}"}],
                 "ability": "math",
                 "reward_model": {
                     "style": "rule",

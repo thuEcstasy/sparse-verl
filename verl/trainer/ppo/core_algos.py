@@ -857,7 +857,15 @@ def compute_policy_loss_vanilla(
         + f" but get the value: {clip_ratio_c}."
     )
 
-    negative_approx_kl = log_prob - old_log_prob
+    # try to replace old_log_prob with rollout_log_probs to test training stability and effectiveness
+    import os    
+    use_rollout_prob_for_kl = int(os.environ.get("USE_ROLLOUT_PROB_FOR_KL", 0))
+    if use_rollout_prob_for_kl and rollout_log_probs is not None:
+        negative_approx_kl = log_prob - rollout_log_probs
+
+    else:
+        negative_approx_kl = log_prob - old_log_prob
+
     # Clamp negative_approx_kl for stability
     negative_approx_kl = torch.clamp(negative_approx_kl, min=-20.0, max=20.0)
     ratio = torch.exp(negative_approx_kl)

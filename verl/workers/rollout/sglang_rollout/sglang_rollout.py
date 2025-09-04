@@ -448,11 +448,15 @@ class SGLangRollout(BaseRollout):
                 k: v for k, v in engine_kwargs.items()
                 if k != "attention_backend"
             }
+            if os.environ.get("DISABLE_MEMORY_SAVER", "False").lower() == "true":
+                enable_memory_saver=False
+            else:
+                enable_memory_saver=True
             self._engine = AsyncEngine(
                 model_path=actor_module,
                 dtype=self.config.dtype,
                 mem_fraction_static=self.config.gpu_memory_utilization,
-                enable_memory_saver=True,
+                enable_memory_saver=enable_memory_saver,
                 base_gpu_id=0,
                 gpu_id_step=1,
                 tp_size=self._tp_size,

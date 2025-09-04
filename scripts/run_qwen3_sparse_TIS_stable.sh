@@ -16,11 +16,12 @@ conda activate verl-sparse
 export SGL_DISABLE_TP_MEMORY_INBALANCE_CHECK=True
 export PYTHONPATH=/home/haizhonz/Zhaofeng/sglang/python:$PYTHONPATH
 export CUDA_LAUNCH_BLOCKING=1
+export IMP_RATIO_CAP=4
 module load cuda12.4/toolkit/12.4.1
 nvcc -V
 
+# test_files="['/home/haizhonz/Zhaofeng/verl/scripts/data/olympiadbench/test.parquet','/home/haizhonz/Zhaofeng/verl/scripts/data/aime2024/test.parquet','/home/haizhonz/Zhaofeng/verl/scripts/data/minervamath/test.parquet']"
 test_files="['/home/haizhonz/Zhaofeng/verl/scripts/data/olympiadbench/test.parquet']"
-
 PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     algorithm.adv_estimator=grpo \
     data.train_files=/home/haizhonz/Zhaofeng/verl/scripts/data/deepscaleR/train.parquet \
@@ -56,11 +57,24 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     actor_rollout_ref.ref.strategy=fsdp2 \
     actor_rollout_ref.rollout.engine_kwargs.sglang.attention_backend='flashinfer' \
     +actor_rollout_ref.rollout.engine_kwargs.sglang.disable_cuda_graph=True \
+    +actor_rollout_ref.rollout.engine_kwargs.sglang.vortex_num_selected_pages=32 \
+    +actor_rollout_ref.rollout.engine_kwargs.sglang.page_size=16 \
+    +actor_rollout_ref.rollout.engine_kwargs.sglang.vortex_sparse_attention_algorithm='BLOCK_TOPK' \
+    +actor_rollout_ref.rollout.engine_kwargs.sglang.disable_overlap_schedule=True \
+    +actor_rollout_ref.rollout.engine_kwargs.sglang.enable_vortex_sparsity=True \
+    +actor_rollout_ref.rollout.engine_kwargs.sglang.vortex_page_reserved_bos=2 \
+    +actor_rollout_ref.rollout.engine_kwargs.sglang.vortex_page_reserved_eos=2 \
+    +actor_rollout_ref.rollout.engine_kwargs.sglang.vortex_layers_skip=[0,1] \
+    actor_rollout_ref.rollout.val_kwargs.n=1 \
+    actor_rollout_ref.rollout.val_kwargs.do_sample=True \
+    actor_rollout_ref.rollout.val_kwargs.top_p=0.95 \
+    actor_rollout_ref.rollout.val_kwargs.top_k=20 \
+    actor_rollout_ref.rollout.val_kwargs.temperature=0.6 \
     algorithm.use_kl_in_reward=False \
     trainer.critic_warmup=0 \
     trainer.logger=['console, wandb'] \
     trainer.project_name='sparse-verl' \
-    trainer.experiment_name='H200_Qwen3-Base_bs256-dense_rollout' \
+    trainer.experiment_name='H200_Qwen3-Base-block-topk-sparse_bs256+TIS_rollout' \
     trainer.n_gpus_per_node=1 \
     trainer.nnodes=1 \
     trainer.save_freq=20 \

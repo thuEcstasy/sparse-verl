@@ -20,10 +20,12 @@ export IMP_RATIO_CAP=4
 module load cuda12.4/toolkit/12.4.1
 nvcc -V
 
+test_files="['/home/haizhonz/Zhaofeng/verl/scripts/data/math500/test.parquet','/home/haizhonz/Zhaofeng/verl/scripts/data/aime2024/test.parquet']"
+
 PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     algorithm.adv_estimator=grpo \
     data.train_files=/home/haizhonz/Zhaofeng/verl/scripts/data/deepscaleR/train.parquet \
-    data.val_files=/home/haizhonz/Zhaofeng/verl/scripts/data/math500/test_128.parquet \
+    data.val_files=$test_files \
     data.train_batch_size=16 \
     data.val_batch_size=64 \
     data.max_prompt_length=512 \

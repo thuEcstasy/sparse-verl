@@ -32,7 +32,7 @@ def make_prefix(dp, template_type):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--local_dir', default='./data/aime2024')
+    parser.add_argument('--local_dir', default='./data/olympiadbench')
     parser.add_argument('--hdfs_dir', default=None)
     # parser.add_argument('--train_size', type=int, default=7500)
     # parser.add_argument('--test_size', type=int, default=5000)
@@ -40,11 +40,11 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    data_source = 'HuggingFaceH4/aime_2024'
+    data_source = 'math-ai/olympiadbench'
 
-    dataset = datasets.load_dataset(data_source, trust_remote_code=True)
+    dataset = datasets.load_dataset(data_source, trust_remote_code=True,)
     
-    test_dataset = dataset['train']
+    test_dataset = dataset['test']
 
     # add a row to each data item that represents a unique id
     def make_map_fn(split):
@@ -52,8 +52,8 @@ if __name__ == '__main__':
         def process_fn(example, idx):
             # random_int = np.random.randint(0, 10)
 
-            question = example.pop('problem')
-            solution = example.pop('answer')
+            question = example.pop('question')
+            solution = example.pop('final_answer')
             # if random_int == 0:
             #     print(f">>> Question: \n{question}")
             #     print(f">>> Solution: \n{solution}")
@@ -72,12 +72,11 @@ if __name__ == '__main__':
                     'index': idx
                 }
             }
-            print(data['prompt'])
             return data
 
         return process_fn
 
-    test_dataset = test_dataset.map(function=make_map_fn('train'), with_indices=True)
+    test_dataset = test_dataset.map(function=make_map_fn('test'), with_indices=True, )
 
     local_dir = args.local_dir
     hdfs_dir = args.hdfs_dir

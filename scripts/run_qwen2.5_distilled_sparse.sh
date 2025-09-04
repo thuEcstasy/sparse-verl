@@ -70,4 +70,5 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     trainer.save_freq=20 \
     trainer.test_freq=20 \
     trainer.total_epochs=15 \
-    trainer.resume_mode=disable
+    trainer.resume_mode=disable \
+    actor_rollout_ref.rollout.calculate_log_probs=True
