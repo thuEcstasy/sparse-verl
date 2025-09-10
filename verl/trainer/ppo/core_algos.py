@@ -860,17 +860,45 @@ def compute_policy_loss_vanilla(
     # try to replace old_log_prob with rollout_log_probs to test training stability and effectiveness
     import os    
     use_rollout_prob_for_kl = int(os.environ.get("USE_ROLLOUT_PROB_FOR_KL", 0))
+    use_gspo_for_kl = float(os.environ.get("USE_GSPO_FOR_KL", 0))
     if use_rollout_prob_for_kl and rollout_log_probs is not None:
         negative_approx_kl = log_prob - rollout_log_probs
+    elif use_gspo_for_kl > 0 and rollout_log_probs is not None:
+        # use the sequence-level importance ratio from GSPO for KL computation
+        assert rollout_log_probs.requires_grad is False
+        rollout_logp_det = rollout_log_probs.detach()
+            
+        per_token_logps = log_prob - rollout_logp_det  # (B, L)
 
+        # sequence-level average log-ratio (detach to block gradient)
+        seq_lengths = torch.sum(response_mask, dim=-1).clamp(min=1).to(log_prob.dtype)
+        seq_weight = ((per_token_logps * response_mask).sum(-1) / seq_lengths) * use_gspo_for_kl # (B,)
+        print("seq_importance_ratio: ", torch.exp(seq_weight), flush=True)
+        # GSPO trick: value from seq_weight, gradient from per_token_logps
+        negative_approx_kl = seq_weight.detach().unsqueeze(-1) + (
+            per_token_logps - per_token_logps.detach()
+        )  # (B, L)
     else:
         negative_approx_kl = log_prob - old_log_prob
 
     # Clamp negative_approx_kl for stability
     negative_approx_kl = torch.clamp(negative_approx_kl, min=-20.0, max=20.0)
     ratio = torch.exp(negative_approx_kl)
+    
     ppo_kl = verl_F.masked_mean(-negative_approx_kl, response_mask)
 
+
+    # rule-base filtering
+    filter_low_ratio_samples = float(os.environ.get("FILTER_LOW_RATIO_SAMPLES", 1.0))
+    if filter_low_ratio_samples < 1.0:
+        assert use_gspo_for_kl == 0 and use_rollout_prob_for_kl == 0, "filter_low_ratio_samples only works when use_rollout_prob_for_kl is set"
+        per_token_logps = log_prob - rollout_log_probs  # (B, L)
+
+        # sequence-level average log-ratio (detach to block gradient)
+        seq_lengths = torch.sum(response_mask, dim=-1).clamp(min=1).to(log_prob.dtype)
+        seq_weight = ((per_token_logps * response_mask).sum(-1) / seq_lengths)
+        advantages = torch.where(torch.exp(seq_weight) < filter_low_ratio_samples, torch.tensor(0.0).to(advantages), advantages)
+        
     pg_losses1 = -advantages * ratio
     if cliprange_low is None:
         cliprange_low = cliprange
