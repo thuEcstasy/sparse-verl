@@ -15,7 +15,7 @@ conda activate verl-sparse
 unset ROCR_VISIBLE_DEVICES
 export SGL_DISABLE_TP_MEMORY_INBALANCE_CHECK=True
 export PYTHONPATH=/home/haizhonz/Zhaofeng/sglang/python:$PYTHONPATH
-export IMP_RATIO_CAP=4
+# export IMP_RATIO_CAP=4
 module load cuda12.4/toolkit/12.4.1
 nvcc -V
 

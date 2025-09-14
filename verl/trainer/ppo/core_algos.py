@@ -899,6 +899,12 @@ def compute_policy_loss_vanilla(
         seq_weight = ((per_token_logps * response_mask).sum(-1) / seq_lengths)
         advantages = torch.where(torch.exp(seq_weight) < filter_low_ratio_samples, torch.tensor(0.0).to(advantages), advantages)
         
+    use_speculative_rejection = float(os.environ.get("SPECULATIVE_UPPERBOUND", -1))
+    if use_speculative_rejection is not -1:
+        speculative_ratio = torch.exp(log_prob - rollout_log_probs).detach()
+        # only apply advantage to samples with speculative_ratio > upperbound
+        advantages = torch.where(speculative_ratio > use_speculative_rejection, advantages, torch.tensor(0.0).to(advantages))
+
     pg_losses1 = -advantages * ratio
     if cliprange_low is None:
         cliprange_low = cliprange

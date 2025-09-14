@@ -625,6 +625,7 @@ class RayPPOTrainer:
         self.validation_generations_logger.log(self.config.trainer.logger, samples, self.global_steps)
 
     def _validate(self):
+
         data_source_lst = []
         reward_extra_infos_dict: dict[str, list] = defaultdict(list)
 
@@ -677,6 +678,9 @@ class RayPPOTrainer:
                 "validate": True,
                 "global_steps": self.global_steps,
             }
+            # use dense attention during validation
+            test_gen_batch.meta_info["use_dense"] = True
+            
             print(f"test_gen_batch meta info: {test_gen_batch.meta_info}")
 
             # pad to be divisible by dp_size

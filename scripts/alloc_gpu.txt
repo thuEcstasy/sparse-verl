@@ -1,7 +1,48 @@
 srun --partition=HGPU --gres=gpu:1 --time=48:00:00 --pty bash
-srun --partition=defq --gres=gpu:2 --nodelist=node-gpu02 --time=70:00:00 --pty bash
+srun --partition=defq --gres=gpu:1 --nodelist=node-gpu02 --time=70:00:00 --pty bash
+srun --partition=defq --gres=gpu:1 --nodelist=cyh-c0-gpu002 --time=48:00:00 --pty bash
 
 python3 -m verl.model_merger merge \
     --backend fsdp \
-    --local_dir /home/haizhonz/Zhaofeng/verl/scripts/checkpoints/sparse-verl/Deepseek_r1_distill_1.5B-dense_rollout/global_step_120/actor \
-    --target_dir /home/haizhonz/Zhaofeng/verl/scripts/checkpoints/sparse-verl/Deepseek_r1_distill_1.5B-dense_rollout/global_step_120/actor/huggingface
+    --local_dir /home/haizhonz/Zhaofeng/verl/scripts/checkpoints/sparse-verl/H200_deepscaleR-dense_rollout_new/global_step_640/actor \
+    --target_dir /home/haizhonz/Zhaofeng/verl/scripts/checkpoints/sparse-verl/H200_deepscaleR-dense_rollout_new/global_step_640/actor/huggingface
+
+python3 -m verl.model_merger merge \
+    --backend fsdp \
+    --local_dir /home/haizhonz/Zhaofeng/verl/scripts/checkpoints/sparse-verl/H200_deepscaleR-sparse_TIS_32_rollout_new/global_step_460/actor \
+    --target_dir /home/haizhonz/Zhaofeng/verl/scripts/checkpoints/sparse-verl/H200_deepscaleR-sparse_TIS_32_rollout_new/global_step_460/actor/huggingface
+
+
+
+python3 -m verl.model_merger merge \
+    --backend fsdp \
+    --local_dir /home/haizhonz/Zhaofeng/verl/scripts/checkpoints/sparse-verl/H200_deepscaleR-sparse_TIS_16_rollout_new/global_step_360/actor \
+    --target_dir /home/haizhonz/Zhaofeng/verl/scripts/checkpoints/sparse-verl/H200_deepscaleR-sparse_TIS_16_rollout_new/global_step_360/actor/huggingface
+
+
+
+dense rollout, 8k ctx
+
+
+python3 -m verl.model_merger merge \
+    --backend fsdp \
+    --local_dir /home/haizhonz/Zhaofeng/verl/scripts/checkpoints/sparse-verl/H100_deepscaleR-dense_rollout8/global_step_120/actor \
+    --target_dir /home/haizhonz/Zhaofeng/verl/scripts/checkpoints/sparse-verl/H100_deepscaleR-dense_rollout8/global_step_120/actor/huggingface
+
+
+sparse+TIS+GSPO,0.03
+
+
+python3 -m verl.model_merger merge \
+    --backend fsdp \
+    --local_dir /home/haizhonz/Zhaofeng/verl/scripts/checkpoints/sparse-verl/H100_deepscaleR-sparse_TIS_rollout8_GSPO1_clipped/global_step_120/actor \
+    --target_dir /home/haizhonz/Zhaofeng/verl/scripts/checkpoints/sparse-verl/H100_deepscaleR-sparse_TIS_rollout8_GSPO1_clipped/global_step_120/actor/huggingface
+
+
+sparse+TIS, baseline
+
+
+python3 -m verl.model_merger merge \
+    --backend fsdp \
+    --local_dir /home/haizhonz/Zhaofeng/verl/scripts/checkpoints/sparse-verl/H200_deepscaleR-sparse_TIS_32_rollout_new/global_step_120/actor \
+    --target_dir /home/haizhonz/Zhaofeng/verl/scripts/checkpoints/sparse-verl/H200_deepscaleR-sparse_TIS_32_rollout_new/global_step_120/actor/huggingface

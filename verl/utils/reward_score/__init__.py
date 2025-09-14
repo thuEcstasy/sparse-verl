@@ -51,18 +51,18 @@ def default_compute_score(
                          "HuggingFaceH4/aime_2024",
                          "math-ai/minervamath",
                          "math-ai/olympiadbench"]:
-        from . import math
+        # from . import math
 
-        res = math.compute_score(solution_str, ground_truth)
+        # res = math.compute_score(solution_str, ground_truth)
         # [Optional] Math-Verify Integration
         # For enhanced accuracy, consider utilizing Math-Verify (https://github.com/huggingface/Math-Verify).
         # Note: Math-Verify needs to be manually installed via pip: `pip install math-verify`.
         # To use it, override the `compute_score` function with the following implementation:
 
-        # from . import math_verify
-        # if isinstance(ground_truth, list):
-        #     ground_truth = ground_truth[0]
-        # res = math_verify.compute_score(solution_str, ground_truth)
+        from . import math_verify
+        if isinstance(ground_truth, list):
+            ground_truth = ground_truth[0]
+        res = math_verify.compute_score(solution_str, ground_truth)
     elif data_source == "math_dapo" or data_source.startswith("aime"):
         from . import math_dapo
 

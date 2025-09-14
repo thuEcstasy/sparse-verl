@@ -733,6 +733,7 @@ class SGLangRollout(BaseRollout):
                     return_logprob=True,
                     input_ids=idx_list,
                     image_data=image_list,
+                    validate=True if is_validate else False,
                 )
             )
         else:

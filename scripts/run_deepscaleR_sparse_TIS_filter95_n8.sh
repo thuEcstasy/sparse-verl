@@ -21,10 +21,10 @@ module load cuda12.4/toolkit/12.4.1
 nvcc -V
 
 # test_files="['/home/haizhonz/Zhaofeng/verl/scripts/data/olympiadbench/test.parquet','/home/haizhonz/Zhaofeng/verl/scripts/data/aime2024/test.parquet','/home/haizhonz/Zhaofeng/verl/scripts/data/minervamath/test.parquet']"
-test_files="['/network/rit/lab/wang_lab_cs/Zhaofeng/verl-sparse/sparse-verl/scripts/data/aime2024/test.parquet']"
+test_files="['/home/haizhonz/Zhaofeng/verl/scripts/data/aime2024/test.parquet']"
 PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     algorithm.adv_estimator=grpo \
-    data.train_files=/network/rit/lab/wang_lab_cs/Zhaofeng/verl-sparse/sparse-verl/scripts/data/deepscaleR/train.parquet \
+    data.train_files=/home/haizhonz/Zhaofeng/verl/scripts/data/deepscaleR/train.parquet \
     data.val_files=$test_files \
     data.train_batch_size=16 \
     data.val_batch_size=64 \
@@ -73,12 +73,12 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     trainer.critic_warmup=0 \
     trainer.logger=['console, wandb'] \
     trainer.project_name='sparse-verl' \
-    trainer.experiment_name='A100_deepscaleR-sparse_TIS_rollout8_filter95_new' \
+    trainer.experiment_name='H200_deepscaleR-sparse_TIS_rollout8_filter95_new' \
     trainer.n_gpus_per_node=1 \
     trainer.nnodes=1 \
     trainer.save_freq=20 \
     trainer.test_freq=20 \
     trainer.total_epochs=15 \
     trainer.resume_mode=disable \
-    trainer.val_before_train=False \
+    trainer.val_before_train=True \
     actor_rollout_ref.rollout.calculate_log_probs=True
