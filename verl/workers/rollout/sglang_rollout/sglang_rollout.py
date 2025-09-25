@@ -452,8 +452,11 @@ class SGLangRollout(BaseRollout):
                 enable_memory_saver=False
             else:
                 enable_memory_saver=True
+            use_light_rollout = os.environ.get("USE_LIGHT_ROLLOUT", "False").lower() == "true"
+            if use_light_rollout:
+                logger.warning("Using light rollout model!")
             self._engine = AsyncEngine(
-                model_path=actor_module,
+                model_path=actor_module if not use_light_rollout else "Qwen/Qwen3-0.6B",
                 dtype=self.config.dtype,
                 mem_fraction_static=self.config.gpu_memory_utilization,
                 enable_memory_saver=enable_memory_saver,

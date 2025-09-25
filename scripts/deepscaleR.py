@@ -282,7 +282,7 @@ if __name__ == '__main__':
 
     dataset = datasets.load_dataset(data_source)
 
-    train_dataset = dataset['train'].select(range(TRAIN_SIZE))
+    train_dataset = dataset['train']
 
     # instruction_following = "Let's think step by step and output the final answer within \\boxed{}."
 

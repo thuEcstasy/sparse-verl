@@ -27,7 +27,7 @@ from typing import Any, Callable, Optional
 import numpy as np
 import torch
 from omegaconf import DictConfig
-
+import os    
 import verl.utils.torch_functional as verl_F
 from verl.trainer.config import AlgoConfig
 from verl.utils.import_utils import deprecated
@@ -810,6 +810,26 @@ def compute_policy_loss(
     return pg_loss, pg_clipfrac, ppo_kl, pg_clipfrac_lower
 
 
+SAVE_COUNTER = 0  # 全局计数器
+
+def save_debug_tensors(rollout_logp_det, log_prob, old_log_prob, response_mask, out_dir="tensor_logs"):
+    global SAVE_COUNTER
+    os.makedirs(out_dir, exist_ok=True)
+
+    save_path = os.path.join(out_dir, f"debug_tensors_{SAVE_COUNTER:06d}.pt")
+
+    tensors_to_save = {
+        "rollout logits": rollout_logp_det.detach().cpu(),
+        "current logits": log_prob.detach().cpu(),
+        "old_log_prob": old_log_prob.detach().cpu(),
+        "response mask": response_mask.detach().cpu(),
+    }
+
+    torch.save(tensors_to_save, save_path)
+    print(f"[DEBUG] Saved tensors to {save_path}", flush=True)
+
+    SAVE_COUNTER += 1
+
 @register_policy_loss("vanilla")
 def compute_policy_loss_vanilla(
     old_log_prob: torch.Tensor,
@@ -858,7 +878,6 @@ def compute_policy_loss_vanilla(
     )
 
     # try to replace old_log_prob with rollout_log_probs to test training stability and effectiveness
-    import os    
     use_rollout_prob_for_kl = int(os.environ.get("USE_ROLLOUT_PROB_FOR_KL", 0))
     use_gspo_for_kl = float(os.environ.get("USE_GSPO_FOR_KL", 0))
     if use_rollout_prob_for_kl and rollout_log_probs is not None:
@@ -874,10 +893,15 @@ def compute_policy_loss_vanilla(
         seq_lengths = torch.sum(response_mask, dim=-1).clamp(min=1).to(log_prob.dtype)
         seq_weight = ((per_token_logps * response_mask).sum(-1) / seq_lengths) * use_gspo_for_kl # (B,)
         print("seq_importance_ratio: ", torch.exp(seq_weight), flush=True)
+        
         # GSPO trick: value from seq_weight, gradient from per_token_logps
         negative_approx_kl = seq_weight.detach().unsqueeze(-1) + (
             per_token_logps - per_token_logps.detach()
         )  # (B, L)
+        
+        plot_logits = os.environ.get("PLOT_LOGITS", "False")
+        if plot_logits.lower() == "true":
+            save_debug_tensors(rollout_logp_det, log_prob, old_log_prob, response_mask)
     else:
         negative_approx_kl = log_prob - old_log_prob
 
@@ -889,21 +913,21 @@ def compute_policy_loss_vanilla(
 
 
     # rule-base filtering
-    filter_low_ratio_samples = float(os.environ.get("FILTER_LOW_RATIO_SAMPLES", 1.0))
-    if filter_low_ratio_samples < 1.0:
-        assert use_gspo_for_kl == 0 and use_rollout_prob_for_kl == 0, "filter_low_ratio_samples only works when use_rollout_prob_for_kl is set"
-        per_token_logps = log_prob - rollout_log_probs  # (B, L)
+    # filter_low_ratio_samples = float(os.environ.get("FILTER_LOW_RATIO_SAMPLES", 1.0))
+    # if filter_low_ratio_samples < 1.0:
+    #     assert use_gspo_for_kl == 0 and use_rollout_prob_for_kl == 0, "filter_low_ratio_samples only works when use_rollout_prob_for_kl is set"
+    #     per_token_logps = log_prob - rollout_log_probs  # (B, L)
 
-        # sequence-level average log-ratio (detach to block gradient)
-        seq_lengths = torch.sum(response_mask, dim=-1).clamp(min=1).to(log_prob.dtype)
-        seq_weight = ((per_token_logps * response_mask).sum(-1) / seq_lengths)
-        advantages = torch.where(torch.exp(seq_weight) < filter_low_ratio_samples, torch.tensor(0.0).to(advantages), advantages)
+    #     # sequence-level average log-ratio (detach to block gradient)
+    #     seq_lengths = torch.sum(response_mask, dim=-1).clamp(min=1).to(log_prob.dtype)
+    #     seq_weight = (per_token_logps * response_mask).sum(-1) / seq_lengths
+    #     advantages = torch.where(torch.exp(seq_weight) < filter_low_ratio_samples, torch.tensor(0.0).to(advantages), advantages)
         
-    use_speculative_rejection = float(os.environ.get("SPECULATIVE_UPPERBOUND", -1))
-    if use_speculative_rejection is not -1:
-        speculative_ratio = torch.exp(log_prob - rollout_log_probs).detach()
-        # only apply advantage to samples with speculative_ratio > upperbound
-        advantages = torch.where(speculative_ratio > use_speculative_rejection, advantages, torch.tensor(0.0).to(advantages))
+    # use_speculative_rejection = float(os.environ.get("SPECULATIVE_UPPERBOUND", -1))
+    # if use_speculative_rejection > 0:
+    #     speculative_ratio = torch.exp(log_prob - rollout_log_probs).detach()
+    #     # only apply advantage to samples with speculative_ratio > upperbound
+    #     advantages = torch.where(speculative_ratio < use_speculative_rejection, torch.tensor(0.0).to(advantages), advantages)
 
     pg_losses1 = -advantages * ratio
     if cliprange_low is None:
@@ -927,7 +951,6 @@ def compute_policy_loss_vanilla(
     pg_losses = torch.where(advantages < 0, clip_pg_losses2, clip_pg_losses1)
     
     
-    import os
     imp_ratio_cap = int(os.environ.get("IMP_RATIO_CAP", 0))
     if imp_ratio_cap is not None:
         if imp_ratio_cap > 0:
