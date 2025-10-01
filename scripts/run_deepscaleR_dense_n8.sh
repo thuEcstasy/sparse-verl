@@ -54,6 +54,7 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     actor_rollout_ref.ref.strategy=fsdp2 \
     actor_rollout_ref.rollout.engine_kwargs.sglang.attention_backend='flashinfer' \
     +actor_rollout_ref.rollout.engine_kwargs.sglang.disable_cuda_graph=True \
+    +actor_rollout_ref.rollout.engine_kwargs.sglang.kv_cache_dtype="fp8_e4m3" \
     actor_rollout_ref.rollout.val_kwargs.n=8 \
     actor_rollout_ref.rollout.val_kwargs.do_sample=True \
     actor_rollout_ref.rollout.val_kwargs.top_p=0.95 \

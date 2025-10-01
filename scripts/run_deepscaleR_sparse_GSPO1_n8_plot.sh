@@ -16,7 +16,7 @@ unset ROCR_VISIBLE_DEVICES
 export SGL_DISABLE_TP_MEMORY_INBALANCE_CHECK=True
 export PYTHONPATH=/home/haizhonz/Zhaofeng/sglang/python:$PYTHONPATH
 export USE_GSPO_FOR_KL=1
-export IMP_RATIO_CAP=4
+export IMP_RATIO_CAP=
 export PLOT_LOGITS=True
 module load cuda12.4/toolkit/12.4.1
 nvcc -V

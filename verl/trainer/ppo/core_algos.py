@@ -899,6 +899,18 @@ def compute_policy_loss_vanilla(
             per_token_logps - per_token_logps.detach()
         )  # (B, L)
         
+        # token-level rejection: only apply advantage to tokens with rollout_probs > 0.5 and current_probs / rollout_probs > 0.5
+        token_rejection_ratio = float(os.environ.get("GSPO_TOKEN_REJECTION_RATIO", -1.0))
+        if token_rejection_ratio > 0:
+            assert token_rejection_ratio < 1.0, "token_rejection_ratio should be in (0, 1)"
+            token_mask = (torch.exp(rollout_logp_det) > token_rejection_ratio) & (
+                torch.exp(log_prob - rollout_logp_det) > token_rejection_ratio
+            )
+            token_mask = token_mask.float() * response_mask
+            advantages = advantages * token_mask
+            print(f"GSPO token rejection applied with ratio {token_rejection_ratio}. Kept {token_mask.sum().item()} tokens. Total tokens: {response_mask.sum().item()}", flush=True)
+        
+        
         plot_logits = os.environ.get("PLOT_LOGITS", "False")
         if plot_logits.lower() == "true":
             save_debug_tensors(rollout_logp_det, log_prob, old_log_prob, response_mask)
